@@ -42,20 +42,23 @@ def mqtt_connect():
 #--------------------------------------------
 app = application = bottle.Bottle()
 
-@app.route('/pub', method='POST')
+#@app.route('/pub', method='POST')
+@app.route('/pub')
 def auth():
     response.content_type = 'text/plain'
     response.status = 403
 
     # data = bottle.request.body.read()
 
-    topic = request.forms.get('topic')
-    message = request.forms.get('message')
+    topic = request.query.topic
+    msg = request.query.msg
+    #topic = request.forms.get('topic') #only for post
+    #msg = request.forms.get('msg')
     print("topic: "+topic)
-    print("message: "+message)
+    print("msg: "+msg)
 
     global client
-    client.publish(topic, payload=message, qos=0, retain=False)
+    client.publish(topic, payload=msg, qos=0, retain=False)
   
     if topic == 'frankie' and message == 'xl':
         print("Got it")
